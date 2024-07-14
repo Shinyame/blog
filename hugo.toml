@@ -1,0 +1,8 @@
+baseURL = 'https://shinyame.github.io/blog/'
+languageCode = 'ja'
+title = 'My Blog'
+theme = 'beautifulhugo'
+ [markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true 
