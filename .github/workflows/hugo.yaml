@@ -45,20 +45,6 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - name: Update Node and npm
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
-      - name: Install Node.js dependencies
-        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
-      - name: Build theme
-        run: |
-          cd themes/hugo-geekdoc
-          npm install
-          npm run build
       - name: Build with Hugo
         env:
           # For maximum backward compatibility with Hugo modules
