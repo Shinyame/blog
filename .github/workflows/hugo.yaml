@@ -55,13 +55,19 @@ jobs:
           hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Remove symlinks
-        run: find ./public -type l -exec rm -v {} +
+        run: find ./public -type l -delete
 
       - name: Copy files to remove hard links
-        run: rsync -a --copy-links --inplace ./public/ ./public_clean/
+        run: rsync -a --copy-links --ignore-existing ./public/ ./public_clean/
 
-      - name: Check artifact size
-        run: du -sh ./public_clean | tee size_report.txt
+      - name: Debug1
+        run: find ./public_clean -type l -exec ls -la {} +
+
+      - name: Debug2
+        run: find ./public_clean -type f -links +1 -exec ls -la {} +
+
+      - name: Remove unnecessary large files
+        run: find ./public_clean -type f -size +500M -delete
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
