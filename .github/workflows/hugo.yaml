@@ -58,13 +58,16 @@ jobs:
         run: find ./public -type l -exec rm -v {} +
 
       - name: Copy files to remove hard links
-        run: rsync -a --ignore-existing --inplace ./public/ ./public_clean/
+        run: rsync -a --copy-links --inplace ./public/ ./public_clean/
 
-      - name: Check for remaining symlinks
-        run: find ./public_clean -type l
+      - name: Debug: Check for symlinks
+        run: find ./public_clean -type l -exec ls -la {} +
+
+      - name: Debug: Check for hard links
+        run: find ./public_clean -type f -links +1 -exec ls -la {} +
 
       - name: Check artifact size
-        run: du -sh ./public_clean
+        run: du -sh ./public_clean | tee size_report.txt
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
