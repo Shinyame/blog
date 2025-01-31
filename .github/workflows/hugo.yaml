@@ -48,9 +48,9 @@ jobs:
           HUGO_ENV: production
         run: |
           hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
-      - name: Remove symlinks and hardlinks
+      - name: Remove symlinks and hard links
         run: |
-          find ./public -type l -exec rm {} \;
+          find ./public -type l -exec rm {} +
           find ./public -type f -exec cp --remove-destination {} {} \;
       - name: Check artifact size
         run: du -sh ./public
@@ -74,6 +74,8 @@ jobs:
           path: ./public
       - name: List downloaded files
         run: ls -la ./public
+      - name: List all files recursively
+        run: find ./public -type f -exec ls -la {} +
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
