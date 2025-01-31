@@ -60,12 +60,6 @@ jobs:
       - name: Copy files to remove hard links
         run: rsync -a --copy-links --inplace ./public/ ./public_clean/
 
-      - name: Debug: Check for symlinks
-        run: find ./public_clean -type l -exec ls -la {} +
-
-      - name: Debug: Check for hard links
-        run: find ./public_clean -type f -links +1 -exec ls -la {} +
-
       - name: Check artifact size
         run: du -sh ./public_clean | tee size_report.txt
 
